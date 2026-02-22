@@ -10,6 +10,15 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
+export interface AdminDebugInfo {
+  'totalEmployees' : bigint,
+  'callerIsRegistered' : boolean,
+  'callerRole' : string,
+  'callerEmployeeInfo' : [] | [Employee],
+  'callerIsAdmin' : boolean,
+  'callerPrincipal' : string,
+  'allAdminPrincipals' : Array<string>,
+}
 export interface AttendanceRecord {
   'checkInTime' : Time,
   'checkOutTime' : [] | [Time],
@@ -32,6 +41,7 @@ export interface _SERVICE {
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'checkIn' : ActorMethod<[number, number], undefined>,
   'checkOut' : ActorMethod<[], undefined>,
+  'getAdminDebugInfo' : ActorMethod<[], AdminDebugInfo>,
   'getAllEmployees' : ActorMethod<[], Array<Employee>>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,

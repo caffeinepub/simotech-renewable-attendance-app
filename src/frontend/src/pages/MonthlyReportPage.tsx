@@ -14,7 +14,7 @@ import { useNavigate } from '@tanstack/react-router';
 
 export default function MonthlyReportPage() {
   const { identity } = useInternetIdentity();
-  const { data: isAdmin, isLoading: isAdminLoading } = useIsAdmin();
+  const { data: isAdmin, isLoading: isAdminLoading, isSuccess, isFetched } = useIsAdmin();
   const { data: employees, isLoading: employeesLoading } = useGetAllEmployees();
   const navigate = useNavigate();
 
@@ -30,31 +30,38 @@ export default function MonthlyReportPage() {
   );
 
   useEffect(() => {
-    console.log('[MonthlyReportPage] Component state:', {
-      hasIdentity: !!identity,
-      principal: identity?.getPrincipal().toString(),
-      isAdmin,
-      isAdminLoading,
-    });
+    console.log('[MonthlyReportPage] ===== COMPONENT RENDER STATE =====');
+    console.log('[MonthlyReportPage] Timestamp:', new Date().toISOString());
+    console.log('[MonthlyReportPage] Identity present:', !!identity);
+    console.log('[MonthlyReportPage] Principal:', identity?.getPrincipal().toString());
+    console.log('[MonthlyReportPage] isAdmin value:', isAdmin);
+    console.log('[MonthlyReportPage] isAdminLoading:', isAdminLoading);
+    console.log('[MonthlyReportPage] isSuccess:', isSuccess);
+    console.log('[MonthlyReportPage] isFetched:', isFetched);
+    console.log('[MonthlyReportPage] Will show report content:', !!identity && !isAdminLoading && isAdmin === true);
+    console.log('[MonthlyReportPage] Will show access denied:', !!identity && !isAdminLoading && isAdmin === false);
+    console.log('[MonthlyReportPage] Will show loading:', !!identity && isAdminLoading);
 
     if (!identity) {
-      console.log('[MonthlyReportPage] No identity, redirecting to home');
+      console.log('[MonthlyReportPage] ⚠️ No identity, redirecting to home');
       navigate({ to: '/' });
     }
-  }, [identity, isAdmin, isAdminLoading, navigate]);
+  }, [identity, isAdmin, isAdminLoading, isSuccess, isFetched, navigate]);
 
   useEffect(() => {
     if (employees && employees.length > 0 && !selectedEmployeeId) {
+      console.log('[MonthlyReportPage] Setting default employee:', employees[0].name);
       setSelectedEmployeeId(employees[0].principal);
     }
   }, [employees, selectedEmployeeId]);
 
   if (!identity) {
+    console.log('[MonthlyReportPage] Rendering: null (no identity)');
     return null;
   }
 
   if (isAdminLoading) {
-    console.log('[MonthlyReportPage] Admin status loading...');
+    console.log('[MonthlyReportPage] Rendering: Loading skeleton');
     return (
       <div className="container mx-auto px-4 py-8">
         <Skeleton className="h-32 w-full mb-6" />
@@ -64,11 +71,13 @@ export default function MonthlyReportPage() {
   }
 
   if (!isAdmin) {
-    console.log('[MonthlyReportPage] Access denied - user is not admin');
+    console.log('[MonthlyReportPage] Rendering: Access Denied Screen');
+    console.log('[MonthlyReportPage] ❌ User is NOT admin - isAdmin value:', isAdmin);
     return <AccessDeniedScreen />;
   }
 
-  console.log('[MonthlyReportPage] Rendering monthly report page');
+  console.log('[MonthlyReportPage] Rendering: Full Monthly Report Page');
+  console.log('[MonthlyReportPage] ✓ User IS admin - showing report features');
 
   return (
     <div className="container mx-auto px-4 py-8">

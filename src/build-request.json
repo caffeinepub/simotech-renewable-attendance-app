@@ -1,89 +1,112 @@
 {
   "kind": "build_request",
-  "title": "Fix admin features not displaying for authorized principal",
+  "title": "Fix admin features visibility for authenticated principal",
   "projectName": "Simotech Attendance",
   "priority": "high",
   "requirements": [
     {
-      "id": "REQ-19",
-      "text": "Debug and fix the admin authorization check logic in the backend to ensure principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe' is correctly recognized as an admin when calling isCallerAdmin()",
+      "id": "REQ-29",
+      "text": "Add extensive console logging throughout the admin authorization flow in the backend main.mo file, including: logging when the actor initializes and shows which principals are added to the admins HashSet, logging every call to isCallerAdmin() with the caller's principal and the comparison result, and logging the complete contents of the admins HashSet to verify the principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe' is present",
       "target": "backend",
       "source": {
         "messageIds": [
-          "msg-recent-5"
+          "msg-5"
         ],
         "quotes": [
-          "Not showing admin features"
+          "Not showing"
         ]
       },
       "acceptanceCriteria": [
-        "The backend's isCallerAdmin() method returns true when called by principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe'",
-        "Admin authorization check correctly handles principal comparison and storage retrieval",
-        "The admin principal is properly persisted across canister upgrades"
+        "Console output shows the admins HashSet contents during actor initialization",
+        "Every isCallerAdmin() call logs the caller principal and comparison result",
+        "Logs confirm whether principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe' exists in the admins HashSet"
       ]
     },
     {
-      "id": "REQ-20",
-      "text": "Verify the useIsAdmin hook correctly queries the backend and returns admin status for the authenticated user with principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe'",
+      "id": "REQ-30",
+      "text": "Add detailed console logging to the frontend useIsAdmin hook in useIsAdmin.ts to output: when the query executes, the current actor initialization state, the raw response value from the backend isCallerAdmin() call before any transformation, and any errors with full stack traces",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-recent-5"
+          "msg-5"
         ],
         "quotes": [
-          "Not showing admin features"
+          "Not showing"
         ]
       },
       "acceptanceCriteria": [
-        "The useIsAdmin hook successfully calls the backend's isCallerAdmin method",
-        "Admin status is correctly cached and accessible throughout the application",
-        "Navigation and access control components respond to the admin status flag"
+        "Console logs show when useIsAdmin query executes",
+        "Logs display the actor state (ready/loading/error)",
+        "Raw backend response from isCallerAdmin() is logged",
+        "Any query errors are logged with stack traces"
       ]
     },
     {
-      "id": "REQ-21",
-      "text": "Ensure the AdminDashboard, MonthlyReportPage, and Layout components correctly display admin features when useIsAdmin returns true for principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe'",
+      "id": "REQ-31",
+      "text": "Add console logging to the AdminDashboard component in AdminDashboard.tsx to log: when the component mounts, the current value of isAdmin from the useIsAdmin hook, the loading state, and whether the access denied screen is being rendered or the admin content is displayed",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-recent-5"
+          "msg-5"
         ],
         "quotes": [
-          "Not showing admin features"
+          "Not showing"
         ]
       },
       "acceptanceCriteria": [
-        "Admin navigation links appear in the Layout component when logged in as admin",
-        "AdminDashboard page renders correctly and shows employee list",
-        "MonthlyReportPage is accessible and displays reporting interface",
-        "No access denied or redirect occurs for admin routes"
+        "Console logs when AdminDashboard component mounts",
+        "Logs show the isAdmin value received from useIsAdmin hook",
+        "Logs indicate which UI branch is rendered (access denied vs admin content)"
       ]
     },
     {
-      "id": "REQ-22",
-      "text": "Add backend logging or console output to track admin authorization checks, including the calling principal, stored admin principals, and comparison results to aid in debugging",
+      "id": "REQ-32",
+      "text": "Add console logging to the Layout component in Layout.tsx to log: the current authentication state, the isAdmin value, and which navigation menu items are being rendered (whether admin links are visible or hidden) whenever these values change",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "Not showing"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Console logs show current authentication state in Layout",
+        "Logs display the isAdmin value used for conditional navigation",
+        "Logs indicate which menu items are rendered based on admin status"
+      ]
+    },
+    {
+      "id": "REQ-33",
+      "text": "Verify that the backend migration.mo file correctly preserves the admins HashSet during canister upgrades, ensuring that the principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe' remains in the admin list after upgrades, and add console logging to the migration process to confirm admin principals are being transferred",
       "target": "backend",
       "source": {
         "messageIds": [
-          "msg-recent-5"
+          "msg-5"
+        ],
+        "quotes": [
+          "Not showing"
         ]
       },
       "acceptanceCriteria": [
-        "Backend logs show when isCallerAdmin is called and by which principal",
-        "Logs display the list of stored admin principals for comparison",
-        "Logs indicate whether the authorization check passes or fails"
+        "Migration code includes logic to preserve the admins HashSet",
+        "Console logs during upgrade show which admin principals are migrated",
+        "After upgrade, the backend logs confirm the admin principal is still present"
       ]
     }
   ],
   "constraints": [
-    "Do not modify the Internet Identity authentication flow in useInternetIdentity.ts",
-    "Maintain the single-actor backend architecture in backend/main.mo",
-    "Do not change the UI component library or styling approach"
+    "Preserve the single-actor architecture in backend/main.mo",
+    "Do not modify immutable frontend paths: useInternetIdentity.ts, useInternetIdentity.tsx, useActor.ts, main.tsx, components/ui",
+    "All console logging must be detailed enough to diagnose why admin features are not displaying",
+    "Maintain all existing functionality while adding diagnostic logging"
   ],
   "nonGoals": [
-    "Adding additional admin users beyond the specified principal",
-    "Implementing role-based permissions beyond admin/user distinction",
-    "Modifying the employee dashboard functionality"
+    "Changing the admin authorization mechanism",
+    "Adding new admin features beyond visibility debugging",
+    "Modifying the Internet Identity authentication flow",
+    "Redesigning the UI layout or styling"
   ],
   "imageRequirements": {
     "required": [],

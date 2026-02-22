@@ -11,13 +11,22 @@ export interface Location {
     latitude: number;
     longitude: number;
 }
+export type Time = bigint;
+export interface AdminDebugInfo {
+    totalEmployees: bigint;
+    callerIsRegistered: boolean;
+    callerRole: string;
+    callerEmployeeInfo?: Employee;
+    callerIsAdmin: boolean;
+    callerPrincipal: string;
+    allAdminPrincipals: Array<string>;
+}
 export interface Employee {
     principal: Principal;
     name: string;
     email: string;
     isAdmin: boolean;
 }
-export type Time = bigint;
 export interface AttendanceRecord {
     checkInTime: Time;
     checkOutTime?: Time;
@@ -36,6 +45,7 @@ export interface backendInterface {
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     checkIn(latitude: number, longitude: number): Promise<void>;
     checkOut(): Promise<void>;
+    getAdminDebugInfo(): Promise<AdminDebugInfo>;
     getAllEmployees(): Promise<Array<Employee>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;

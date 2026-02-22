@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 13,
+  "projectStateVersion": 17,
   "summary": "Attendance app for employees of Simotech Renewable with offline access, data sync when online, monthly reporting, location tracking, and admin access",
   "architectural_notes": [
     "Offline-first architecture with local storage and background sync",
@@ -132,6 +132,54 @@
         "REQ-21"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-add-detailed-console-logging-to-the-frontend-useisadmin-hook-to-output-the-current-actor-state-authenticated-anonymous-the-raw-response-from-the-backend-iscalleradmin-call-and-any-errors-encountered-during-the-query",
+      "title": "Add detailed console logging to the frontend useIsAdmin hook to output: the current actor state (authenticated/anonymous), the raw response from the backend isCallerAdmin() call, and any errors encountered during the query",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-examine-the-useactor-hook-implementation-to-ensure-it-correctly-initializes-the-authenticated-actor-with-the-user-s-identity-from-internet-identity-and-verify-that-the-actor-s-caller-principal-matches-the-logged-in-user-s-principal-id-displayed-in-principaldisplay-component",
+      "title": "Examine the useActor hook implementation to ensure it correctly initializes the authenticated actor with the user's identity from Internet Identity, and verify that the actor's caller principal matches the logged-in user's principal ID displayed in PrincipalDisplay component",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-review-the-admindashboard-and-monthlyreportpage-components-to-ensure-they-correctly-read-the-isadmin-value-from-useisadmin-hook-and-properly-render-admin-ui-elements-when-isadmin-is-true-without-premature-redirects-or-conditional-rendering-bugs",
+      "title": "Review the AdminDashboard and MonthlyReportPage components to ensure they correctly read the isAdmin value from useIsAdmin hook and properly render admin UI elements when isAdmin is true, without premature redirects or conditional rendering bugs",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-detailed-console-logging-to-the-frontend-useisadmin-hook-in-useisadmin-ts-to-output-when-the-query-executes-the-current-actor-initialization-state-the-raw-response-value-from-the-backend-iscalleradmin-call-before-any-transformation-and-any-errors-with-full-stack-traces",
+      "title": "Add detailed console logging to the frontend useIsAdmin hook in useIsAdmin.ts to output: when the query executes, the current actor initialization state, the raw response value from the backend isCallerAdmin() call before any transformation, and any errors with full stack traces",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-console-logging-to-the-admindashboard-component-in-admindashboard-tsx-to-log-when-the-component-mounts-the-current-value-of-isadmin-from-the-useisadmin-hook-the-loading-state-and-whether-the-access-denied-screen-is-being-rendered-or-the-admin-content-is-displayed",
+      "title": "Add console logging to the AdminDashboard component in AdminDashboard.tsx to log: when the component mounts, the current value of isAdmin from the useIsAdmin hook, the loading state, and whether the access denied screen is being rendered or the admin content is displayed",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-console-logging-to-the-layout-component-in-layout-tsx-to-log-the-current-authentication-state-the-isadmin-value-and-which-navigation-menu-items-are-being-rendered-whether-admin-links-are-visible-or-hidden-whenever-these-values-change",
+      "title": "Add console logging to the Layout component in Layout.tsx to log: the current authentication state, the isAdmin value, and which navigation menu items are being rendered (whether admin links are visible or hidden) whenever these values change",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -230,6 +278,46 @@
       "summary": "Add backend logging or console output to track admin authorization checks, including the calling principal, stored admin principals, and comparison results to aid in debugging",
       "reqIds": [
         "REQ-22"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Add comprehensive console logging to the backend isCallerAdmin() function to output: the calling principal from msg.caller, all stored admin principals from the admins HashSet, and a boolean comparison result showing whether the caller matches any admin principal",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-20",
+      "summary": "Verify that the principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe' is correctly added to the backend admins HashSet during initialization or through the addAdmin() function, and ensure it persists across canister upgrades",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-22",
+      "summary": "Add a temporary admin debugging endpoint or query function in the backend that returns detailed information about the current caller's principal, whether they match any admin principal, and the complete list of registered admin principals for troubleshooting purposes",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-23",
+      "summary": "Add extensive console logging throughout the admin authorization flow in the backend main.mo file, including: logging when the actor initializes and shows which principals are added to the admins HashSet, logging every call to isCallerAdmin() with the caller's principal and the comparison result, and logging the complete contents of the admins HashSet to verify the principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe' is present",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-27",
+      "summary": "Verify that the backend migration.mo file correctly preserves the admins HashSet during canister upgrades, ensuring that the principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe' remains in the admin list after upgrades, and add console logging to the migration process to confirm admin principals are being transferred",
+      "reqIds": [
+        "REQ-33"
       ],
       "status": "pending"
     }

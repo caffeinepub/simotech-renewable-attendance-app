@@ -1,12 +1,13 @@
 # Specification
 
 ## Summary
-**Goal:** Fix admin authorization so that the principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe' is correctly recognized as an admin and can access admin features.
+**Goal:** Add comprehensive diagnostic logging throughout the authentication and authorization flow to identify why admin features are not displaying for the authenticated principal.
 
 **Planned changes:**
-- Debug and fix backend isCallerAdmin() method to properly recognize the admin principal
-- Verify useIsAdmin hook correctly queries backend and returns admin status
-- Ensure AdminDashboard, MonthlyReportPage, and Layout components display admin features when user is admin
-- Add backend logging to track admin authorization checks for debugging
+- Add extensive console logging to backend main.mo showing admin HashSet initialization, contents, and every isCallerAdmin() call with caller principal and comparison result
+- Add detailed logging to frontend useIsAdmin hook showing query execution, actor state, raw backend response, and any errors
+- Add console logging to AdminDashboard component showing mount events, isAdmin value, loading state, and UI rendering decisions
+- Add console logging to Layout component showing authentication state, isAdmin value, and navigation menu item visibility
+- Verify and add logging to backend migration.mo to confirm admin principals are preserved during canister upgrades
 
-**User-visible outcome:** Admin user can successfully access and view admin navigation links, admin dashboard with employee list, and monthly report page without access denied errors.
+**User-visible outcome:** Developer can view comprehensive console logs in both frontend and backend to diagnose why the admin principal is not seeing admin features, enabling identification and resolution of the authorization issue.

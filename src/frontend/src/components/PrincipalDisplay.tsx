@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Copy, Check, Key } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface PrincipalDisplayProps {
   principal: string;
@@ -10,13 +10,21 @@ interface PrincipalDisplayProps {
 export default function PrincipalDisplay({ principal }: PrincipalDisplayProps) {
   const [copied, setCopied] = useState(false);
 
+  useEffect(() => {
+    console.log('[PrincipalDisplay] ===== DISPLAYING PRINCIPAL =====');
+    console.log('[PrincipalDisplay] Principal ID:', principal);
+    console.log('[PrincipalDisplay] Principal length:', principal.length);
+    console.log('[PrincipalDisplay] This is the principal shown to the user in the UI');
+  }, [principal]);
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(principal);
       setCopied(true);
+      console.log('[PrincipalDisplay] Principal copied to clipboard:', principal);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      console.error('[PrincipalDisplay] Failed to copy:', err);
     }
   };
 

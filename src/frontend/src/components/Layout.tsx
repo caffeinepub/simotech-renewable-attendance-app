@@ -6,20 +6,70 @@ import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { identity } = useInternetIdentity();
-  const { data: isAdmin, isLoading: isAdminLoading } = useIsAdmin();
+  console.log('[Layout] ===== COMPONENT FUNCTION CALLED =====', {
+    timestamp: new Date().toISOString(),
+  });
+
+  const { identity, loginStatus } = useInternetIdentity();
+  const { data: isAdmin, isLoading: isAdminLoading, status: adminQueryStatus, fetchStatus: adminFetchStatus } = useIsAdmin();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isAuthenticated = !!identity;
 
+  console.log('[Layout] ===== HOOKS STATE =====', {
+    timestamp: new Date().toISOString(),
+    isAuthenticated,
+    loginStatus,
+    principal: identity?.getPrincipal().toString(),
+    isAdmin,
+    isAdminType: typeof isAdmin,
+    isAdminValue: isAdmin === true ? 'TRUE' : isAdmin === false ? 'FALSE' : 'UNDEFINED/NULL',
+    isAdminLoading,
+    adminQueryStatus,
+    adminFetchStatus,
+  });
+
   useEffect(() => {
-    console.log('[Layout] Auth and admin state:', {
+    console.log('[Layout] ===== useEffect: Auth/Admin State Changed =====');
+    console.log('[Layout] Timestamp:', new Date().toISOString());
+    console.log('[Layout] Authentication state:', {
       isAuthenticated,
-      isAdmin,
-      isAdminLoading,
-      identity: identity?.getPrincipal().toString(),
+      loginStatus,
+      principal: identity?.getPrincipal().toString(),
     });
-  }, [isAuthenticated, isAdmin, isAdminLoading, identity]);
+    console.log('[Layout] Admin state:', {
+      isAdmin,
+      isAdminType: typeof isAdmin,
+      isAdminValue: isAdmin === true ? 'TRUE' : isAdmin === false ? 'FALSE' : 'UNDEFINED/NULL',
+      isAdminLoading,
+      adminQueryStatus,
+      adminFetchStatus,
+    });
+    console.log('[Layout] Navigation rendering logic:', {
+      willShowNavigation: isAuthenticated && !isAdminLoading,
+      willShowAdminLinks: isAuthenticated && !isAdminLoading && isAdmin === true,
+      willShowEmployeeLinks: isAuthenticated && !isAdminLoading && isAdmin === false,
+      willHideNavigation: !isAuthenticated || isAdminLoading,
+    });
+  }, [isAuthenticated, loginStatus, isAdmin, isAdminLoading, adminQueryStatus, adminFetchStatus, identity]);
+
+  console.log('[Layout] ===== NAVIGATION RENDER DECISION =====', {
+    timestamp: new Date().toISOString(),
+    isAuthenticated,
+    isAdminLoading,
+    isAdmin,
+    willRenderNavigation: isAuthenticated && !isAdminLoading,
+    willRenderAdminLinks: isAuthenticated && !isAdminLoading && isAdmin,
+    willRenderEmployeeLinks: isAuthenticated && !isAdminLoading && !isAdmin,
+  });
+
+  // Log navigation rendering decisions outside JSX
+  if (!isAuthenticated) {
+    console.log('[Layout] 🔄 Not rendering navigation - not authenticated');
+  }
+  if (isAdminLoading) {
+    console.log('[Layout] 🔄 Not rendering navigation - admin status loading');
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -40,6 +90,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <>
                   {isAdmin ? (
                     <>
+                      {(() => {
+                        console.log('[Layout] 🔄 Rendering ADMIN navigation links (desktop)');
+                        return null;
+                      })()}
                       <Link 
                         to="/admin" 
                         className="text-foreground hover:text-primary transition-colors font-medium"
@@ -54,12 +108,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       </Link>
                     </>
                   ) : (
-                    <Link 
-                      to="/dashboard" 
-                      className="text-foreground hover:text-primary transition-colors font-medium"
-                    >
-                      My Dashboard
-                    </Link>
+                    <>
+                      {(() => {
+                        console.log('[Layout] 🔄 Rendering EMPLOYEE navigation links (desktop)');
+                        return null;
+                      })()}
+                      <Link 
+                        to="/dashboard" 
+                        className="text-foreground hover:text-primary transition-colors font-medium"
+                      >
+                        My Dashboard
+                      </Link>
+                    </>
                   )}
                 </>
               )}
@@ -82,6 +142,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <>
                   {isAdmin ? (
                     <>
+                      {(() => {
+                        console.log('[Layout] 🔄 Rendering ADMIN navigation links (mobile)');
+                        return null;
+                      })()}
                       <Link 
                         to="/admin" 
                         className="block text-foreground hover:text-primary transition-colors font-medium py-2"
@@ -98,13 +162,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       </Link>
                     </>
                   ) : (
-                    <Link 
-                      to="/dashboard" 
-                      className="block text-foreground hover:text-primary transition-colors font-medium py-2"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      My Dashboard
-                    </Link>
+                    <>
+                      {(() => {
+                        console.log('[Layout] 🔄 Rendering EMPLOYEE navigation links (mobile)');
+                        return null;
+                      })()}
+                      <Link 
+                        to="/dashboard" 
+                        className="block text-foreground hover:text-primary transition-colors font-medium py-2"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        My Dashboard
+                      </Link>
+                    </>
                   )}
                 </>
               )}

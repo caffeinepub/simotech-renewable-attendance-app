@@ -13,31 +13,79 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
 export default function AdminDashboard() {
+  console.log('[AdminDashboard] ===== COMPONENT FUNCTION CALLED =====', {
+    timestamp: new Date().toISOString(),
+  });
+
   const { identity } = useInternetIdentity();
-  const { data: isAdmin, isLoading: isAdminLoading } = useIsAdmin();
+  const { data: isAdmin, isLoading: isAdminLoading, isSuccess, isFetched, status, fetchStatus } = useIsAdmin();
   const { data: employees, isLoading: employeesLoading } = useGetAllEmployees();
   const navigate = useNavigate();
 
+  console.log('[AdminDashboard] ===== HOOKS CALLED =====', {
+    timestamp: new Date().toISOString(),
+    identityPresent: !!identity,
+    principal: identity?.getPrincipal().toString(),
+    isAdmin,
+    isAdminType: typeof isAdmin,
+    isAdminLoading,
+    isSuccess,
+    isFetched,
+    status,
+    fetchStatus,
+  });
+
   useEffect(() => {
-    console.log('[AdminDashboard] Component state:', {
-      hasIdentity: !!identity,
+    console.log('[AdminDashboard] ===== useEffect TRIGGERED =====');
+    console.log('[AdminDashboard] Timestamp:', new Date().toISOString());
+    console.log('[AdminDashboard] Dependencies:', {
+      identity: !!identity,
       principal: identity?.getPrincipal().toString(),
       isAdmin,
+      isAdminType: typeof isAdmin,
+      isAdminValue: isAdmin === true ? 'TRUE' : isAdmin === false ? 'FALSE' : 'UNDEFINED/NULL',
       isAdminLoading,
+      isSuccess,
+      isFetched,
+    });
+
+    console.log('[AdminDashboard] Render decision logic:', {
+      hasIdentity: !!identity,
+      isLoadingAdmin: isAdminLoading,
+      isAdminTrue: isAdmin === true,
+      isAdminFalse: isAdmin === false,
+      willShowAdminContent: !!identity && !isAdminLoading && isAdmin === true,
+      willShowAccessDenied: !!identity && !isAdminLoading && isAdmin === false,
+      willShowLoading: !!identity && isAdminLoading,
+      willRedirect: !identity,
     });
 
     if (!identity) {
-      console.log('[AdminDashboard] No identity, redirecting to home');
+      console.log('[AdminDashboard] ⚠️ No identity detected - will redirect to home');
       navigate({ to: '/' });
+    } else {
+      console.log('[AdminDashboard] ✓ Identity present - staying on admin page');
     }
-  }, [identity, isAdmin, isAdminLoading, navigate]);
+  }, [identity, isAdmin, isAdminLoading, isSuccess, isFetched, navigate]);
+
+  console.log('[AdminDashboard] ===== RENDER DECISION POINT =====', {
+    timestamp: new Date().toISOString(),
+    hasIdentity: !!identity,
+    isAdminLoading,
+    isAdmin,
+    willRenderNull: !identity,
+    willRenderLoading: !!identity && isAdminLoading,
+    willRenderAccessDenied: !!identity && !isAdminLoading && !isAdmin,
+    willRenderAdminContent: !!identity && !isAdminLoading && isAdmin,
+  });
 
   if (!identity) {
+    console.log('[AdminDashboard] 🔄 RENDERING: null (no identity - redirecting)');
     return null;
   }
 
   if (isAdminLoading) {
-    console.log('[AdminDashboard] Admin status loading...');
+    console.log('[AdminDashboard] 🔄 RENDERING: Loading skeleton (admin status loading)');
     return (
       <div className="container mx-auto px-4 py-8">
         <Skeleton className="h-32 w-full mb-6" />
@@ -51,12 +99,23 @@ export default function AdminDashboard() {
   }
 
   if (!isAdmin) {
-    console.log('[AdminDashboard] Access denied - user is not admin');
+    console.log('[AdminDashboard] 🚫 RENDERING: Access Denied Screen');
+    console.log('[AdminDashboard] ❌ User is NOT admin');
+    console.log('[AdminDashboard] isAdmin value:', isAdmin);
+    console.log('[AdminDashboard] isAdmin type:', typeof isAdmin);
+    console.log('[AdminDashboard] isAdmin === false:', isAdmin === false);
+    console.log('[AdminDashboard] isAdmin is truthy:', !!isAdmin);
+    console.log('[AdminDashboard] Boolean(isAdmin):', Boolean(isAdmin));
     return <AccessDeniedScreen />;
   }
 
-  console.log('[AdminDashboard] Rendering admin dashboard');
+  console.log('[AdminDashboard] ✅ RENDERING: Full Admin Dashboard');
+  console.log('[AdminDashboard] ✓ User IS admin - showing admin features');
+  console.log('[AdminDashboard] isAdmin value:', isAdmin);
+  console.log('[AdminDashboard] Employees count:', employees?.length || 0);
+  
   const principalId = identity.getPrincipal().toString();
+  console.log('[AdminDashboard] Principal ID for display:', principalId);
 
   return (
     <div className="container mx-auto px-4 py-8">

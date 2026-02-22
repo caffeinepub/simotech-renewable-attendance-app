@@ -1,58 +1,54 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix admin features not displaying for authorized principal",
+  "title": "Fix admin features visibility for authenticated principal",
   "requirements": [
     {
-      "id": "REQ-20",
-      "summary": "Verify the useIsAdmin hook correctly queries the backend and returns admin status for the authenticated user",
+      "id": "REQ-30",
+      "summary": "Add detailed console logging to the useIsAdmin hook to diagnose admin status detection issues",
       "acceptanceCriteria": [
-        "The useIsAdmin hook successfully calls the backend's isCallerAdmin method",
-        "Admin status is correctly cached and accessible throughout the application",
-        "Navigation and access control components respond to the admin status flag"
+        "Console logs show when useIsAdmin query executes",
+        "Logs display the actor state (ready/loading/error)",
+        "Raw backend response from isCallerAdmin() is logged",
+        "Any query errors are logged with stack traces"
       ],
       "file_operations": [
         {
           "path": "frontend/src/hooks/useIsAdmin.ts",
           "operation": "modify",
-          "description": "Debug and enhance the useIsAdmin hook to ensure it properly queries the backend's isCallerAdmin method. Add console logging to track: (1) when the hook is called, (2) the actor availability status, (3) the response from isCallerAdmin, and (4) any errors during the query. Ensure the hook waits for the actor to be fully initialized before making the query. Verify the query is enabled only when both actor exists and actor fetching is complete."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Review and enhance the useIsAdmin query integration to ensure proper cache invalidation and refetch behavior. Add debug logging to track when the admin status query is invalidated or refetched. Verify that the query key ['isAdmin'] is properly used across the application for consistent caching."
+          "description": "Add extensive console logging throughout the useIsAdmin hook to track: when the query executes, the current actor initialization state, the raw response value from the backend isCallerAdmin() call before any transformation, any errors with full stack traces, and the final computed admin status. Include timestamps and caller context in all log statements."
         }
       ]
     },
     {
-      "id": "REQ-21",
-      "summary": "Ensure the AdminDashboard, MonthlyReportPage, and Layout components correctly display admin features when useIsAdmin returns true",
+      "id": "REQ-31",
+      "summary": "Add console logging to AdminDashboard component to track admin status propagation and UI rendering decisions",
       "acceptanceCriteria": [
-        "Admin navigation links appear in the Layout component when logged in as admin",
-        "AdminDashboard page renders correctly and shows employee list",
-        "MonthlyReportPage is accessible and displays reporting interface",
-        "No access denied or redirect occurs for admin routes"
+        "Console logs when AdminDashboard component mounts",
+        "Logs show the isAdmin value received from useIsAdmin hook",
+        "Logs indicate which UI branch is rendered (access denied vs admin content)"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AdminDashboard.tsx",
+          "operation": "modify",
+          "description": "Add console logging to track component lifecycle and admin status: log when component mounts with timestamp, log the current value of isAdmin from the useIsAdmin hook and its loading state, log which UI branch is being rendered (access denied screen vs admin content), and log any state changes that affect the displayed content. Include the component name in all log statements for clarity."
+        }
+      ]
+    },
+    {
+      "id": "REQ-32",
+      "summary": "Add console logging to Layout component to track authentication state and conditional navigation rendering",
+      "acceptanceCriteria": [
+        "Console logs show current authentication state in Layout",
+        "Logs display the isAdmin value used for conditional navigation",
+        "Logs indicate which menu items are rendered based on admin status"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/Layout.tsx",
           "operation": "modify",
-          "description": "Add comprehensive debug logging to track the admin status flow in the navigation. Log: (1) the isAuthenticated state, (2) the isAdmin value from useIsAdmin, (3) the isLoading state of the admin query, and (4) when admin navigation links are shown or hidden. Ensure the component waits for both authentication and admin status queries to complete before rendering navigation. Verify that admin links (Admin Dashboard, Monthly Reports) are conditionally rendered based on isAdmin === true."
-        },
-        {
-          "path": "frontend/src/pages/AdminDashboard.tsx",
-          "operation": "modify",
-          "description": "Add debug logging at the component entry to track: (1) the current authentication state, (2) the isAdmin value and loading state, (3) whether access is granted or denied, and (4) any redirect logic execution. Ensure the access control check waits for the admin query to complete (not loading) before making authorization decisions. Verify the component properly handles the loading state to avoid premature access denial."
-        },
-        {
-          "path": "frontend/src/pages/MonthlyReportPage.tsx",
-          "operation": "modify",
-          "description": "Add debug logging similar to AdminDashboard to track authentication, admin status, and access control flow. Log when the page is accessed, the current admin status, and whether access is granted. Ensure consistent access control logic that waits for the admin query to complete before rendering content or redirecting. Verify the page displays correctly when isAdmin is true and the query is not loading."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Review the routing logic and admin route guards. Add debug logging to track route navigation attempts, especially for admin routes (/admin-dashboard, /monthly-report). Log the authentication state and admin status when these routes are accessed. Ensure the router properly integrates with useIsAdmin hook results and does not prematurely redirect or block admin users. Verify that the profile setup modal does not interfere with admin route access."
+          "description": "Add console logging to track authentication and navigation state: log the current authentication state from useInternetIdentity, log the isAdmin value from useIsAdmin hook, log which navigation menu items are being rendered (specifically whether admin links are visible or hidden), and log whenever these values change using useEffect. Include detailed information about which conditional branches are taken for navigation item rendering."
         }
       ]
     }

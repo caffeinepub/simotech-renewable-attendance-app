@@ -19,6 +19,15 @@ export const Employee = IDL.Record({
   'email' : IDL.Text,
   'isAdmin' : IDL.Bool,
 });
+export const AdminDebugInfo = IDL.Record({
+  'totalEmployees' : IDL.Nat,
+  'callerIsRegistered' : IDL.Bool,
+  'callerRole' : IDL.Text,
+  'callerEmployeeInfo' : IDL.Opt(Employee),
+  'callerIsAdmin' : IDL.Bool,
+  'callerPrincipal' : IDL.Text,
+  'allAdminPrincipals' : IDL.Vec(IDL.Text),
+});
 export const UserProfile = IDL.Record({
   'name' : IDL.Text,
   'email' : IDL.Text,
@@ -39,6 +48,7 @@ export const idlService = IDL.Service({
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
   'checkIn' : IDL.Func([IDL.Float64, IDL.Float64], [], []),
   'checkOut' : IDL.Func([], [], []),
+  'getAdminDebugInfo' : IDL.Func([], [AdminDebugInfo], ['query']),
   'getAllEmployees' : IDL.Func([], [IDL.Vec(Employee)], ['query']),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
@@ -73,6 +83,15 @@ export const idlFactory = ({ IDL }) => {
     'email' : IDL.Text,
     'isAdmin' : IDL.Bool,
   });
+  const AdminDebugInfo = IDL.Record({
+    'totalEmployees' : IDL.Nat,
+    'callerIsRegistered' : IDL.Bool,
+    'callerRole' : IDL.Text,
+    'callerEmployeeInfo' : IDL.Opt(Employee),
+    'callerIsAdmin' : IDL.Bool,
+    'callerPrincipal' : IDL.Text,
+    'allAdminPrincipals' : IDL.Vec(IDL.Text),
+  });
   const UserProfile = IDL.Record({ 'name' : IDL.Text, 'email' : IDL.Text });
   const Time = IDL.Int;
   const Location = IDL.Record({
@@ -90,6 +109,7 @@ export const idlFactory = ({ IDL }) => {
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
     'checkIn' : IDL.Func([IDL.Float64, IDL.Float64], [], []),
     'checkOut' : IDL.Func([], [], []),
+    'getAdminDebugInfo' : IDL.Func([], [AdminDebugInfo], ['query']),
     'getAllEmployees' : IDL.Func([], [IDL.Vec(Employee)], ['query']),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
