@@ -1,0 +1,60 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Fix admin features not displaying for authorized principal",
+  "requirements": [
+    {
+      "id": "REQ-20",
+      "summary": "Verify the useIsAdmin hook correctly queries the backend and returns admin status for the authenticated user",
+      "acceptanceCriteria": [
+        "The useIsAdmin hook successfully calls the backend's isCallerAdmin method",
+        "Admin status is correctly cached and accessible throughout the application",
+        "Navigation and access control components respond to the admin status flag"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useIsAdmin.ts",
+          "operation": "modify",
+          "description": "Debug and enhance the useIsAdmin hook to ensure it properly queries the backend's isCallerAdmin method. Add console logging to track: (1) when the hook is called, (2) the actor availability status, (3) the response from isCallerAdmin, and (4) any errors during the query. Ensure the hook waits for the actor to be fully initialized before making the query. Verify the query is enabled only when both actor exists and actor fetching is complete."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Review and enhance the useIsAdmin query integration to ensure proper cache invalidation and refetch behavior. Add debug logging to track when the admin status query is invalidated or refetched. Verify that the query key ['isAdmin'] is properly used across the application for consistent caching."
+        }
+      ]
+    },
+    {
+      "id": "REQ-21",
+      "summary": "Ensure the AdminDashboard, MonthlyReportPage, and Layout components correctly display admin features when useIsAdmin returns true",
+      "acceptanceCriteria": [
+        "Admin navigation links appear in the Layout component when logged in as admin",
+        "AdminDashboard page renders correctly and shows employee list",
+        "MonthlyReportPage is accessible and displays reporting interface",
+        "No access denied or redirect occurs for admin routes"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "modify",
+          "description": "Add comprehensive debug logging to track the admin status flow in the navigation. Log: (1) the isAuthenticated state, (2) the isAdmin value from useIsAdmin, (3) the isLoading state of the admin query, and (4) when admin navigation links are shown or hidden. Ensure the component waits for both authentication and admin status queries to complete before rendering navigation. Verify that admin links (Admin Dashboard, Monthly Reports) are conditionally rendered based on isAdmin === true."
+        },
+        {
+          "path": "frontend/src/pages/AdminDashboard.tsx",
+          "operation": "modify",
+          "description": "Add debug logging at the component entry to track: (1) the current authentication state, (2) the isAdmin value and loading state, (3) whether access is granted or denied, and (4) any redirect logic execution. Ensure the access control check waits for the admin query to complete (not loading) before making authorization decisions. Verify the component properly handles the loading state to avoid premature access denial."
+        },
+        {
+          "path": "frontend/src/pages/MonthlyReportPage.tsx",
+          "operation": "modify",
+          "description": "Add debug logging similar to AdminDashboard to track authentication, admin status, and access control flow. Log when the page is accessed, the current admin status, and whether access is granted. Ensure consistent access control logic that waits for the admin query to complete before rendering content or redirecting. Verify the page displays correctly when isAdmin is true and the query is not loading."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Review the routing logic and admin route guards. Add debug logging to track route navigation attempts, especially for admin routes (/admin-dashboard, /monthly-report). Log the authentication state and admin status when these routes are accessed. Ensure the router properly integrates with useIsAdmin hook results and does not prematurely redirect or block admin users. Verify that the profile setup modal does not interfere with admin route access."
+        }
+      ]
+    }
+  ]
+}

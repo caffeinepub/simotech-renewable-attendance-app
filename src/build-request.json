@@ -1,0 +1,92 @@
+{
+  "kind": "build_request",
+  "title": "Fix admin features not displaying for authorized principal",
+  "projectName": "Simotech Attendance",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-19",
+      "text": "Debug and fix the admin authorization check logic in the backend to ensure principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe' is correctly recognized as an admin when calling isCallerAdmin()",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-recent-5"
+        ],
+        "quotes": [
+          "Not showing admin features"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The backend's isCallerAdmin() method returns true when called by principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe'",
+        "Admin authorization check correctly handles principal comparison and storage retrieval",
+        "The admin principal is properly persisted across canister upgrades"
+      ]
+    },
+    {
+      "id": "REQ-20",
+      "text": "Verify the useIsAdmin hook correctly queries the backend and returns admin status for the authenticated user with principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe'",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-recent-5"
+        ],
+        "quotes": [
+          "Not showing admin features"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The useIsAdmin hook successfully calls the backend's isCallerAdmin method",
+        "Admin status is correctly cached and accessible throughout the application",
+        "Navigation and access control components respond to the admin status flag"
+      ]
+    },
+    {
+      "id": "REQ-21",
+      "text": "Ensure the AdminDashboard, MonthlyReportPage, and Layout components correctly display admin features when useIsAdmin returns true for principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe'",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-recent-5"
+        ],
+        "quotes": [
+          "Not showing admin features"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin navigation links appear in the Layout component when logged in as admin",
+        "AdminDashboard page renders correctly and shows employee list",
+        "MonthlyReportPage is accessible and displays reporting interface",
+        "No access denied or redirect occurs for admin routes"
+      ]
+    },
+    {
+      "id": "REQ-22",
+      "text": "Add backend logging or console output to track admin authorization checks, including the calling principal, stored admin principals, and comparison results to aid in debugging",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-recent-5"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend logs show when isCallerAdmin is called and by which principal",
+        "Logs display the list of stored admin principals for comparison",
+        "Logs indicate whether the authorization check passes or fails"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify the Internet Identity authentication flow in useInternetIdentity.ts",
+    "Maintain the single-actor backend architecture in backend/main.mo",
+    "Do not change the UI component library or styling approach"
+  ],
+  "nonGoals": [
+    "Adding additional admin users beyond the specified principal",
+    "Implementing role-based permissions beyond admin/user distinction",
+    "Modifying the employee dashboard functionality"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

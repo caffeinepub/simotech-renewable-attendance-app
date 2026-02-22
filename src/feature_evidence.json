@@ -1,0 +1,47 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-verify-the-useisadmin-hook-correctly-queries-the-backend-and-returns-admin-status-for-the-authenticated-user-with-principal-mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe",
+      "featureTitle": "Verify the useIsAdmin hook correctly queries the backend and returns admin status for the authenticated user with principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe'",
+      "files": [
+        "frontend/src/hooks/useIsAdmin.ts",
+        "frontend/src/hooks/useQueries.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-20"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-admindashboard-monthlyreportpage-and-layout-components-correctly-display-admin-features-when-useisadmin-returns-true-for-principal-mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe",
+      "featureTitle": "Ensure the AdminDashboard, MonthlyReportPage, and Layout components correctly display admin features when useIsAdmin returns true for principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe'",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/Layout.tsx",
+        "frontend/src/pages/AdminDashboard.tsx",
+        "frontend/src/pages/MonthlyReportPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-21"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

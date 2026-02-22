@@ -1,0 +1,240 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 13,
+  "summary": "Attendance app for employees of Simotech Renewable with offline access, data sync when online, monthly reporting, location tracking, and admin access",
+  "architectural_notes": [
+    "Offline-first architecture with local storage and background sync",
+    "Geolocation tracking for employee attendance",
+    "Role-based access control with admin privileges",
+    "Internet Identity uses anonymous principal IDs instead of exposing email addresses to applications for privacy"
+  ],
+  "known_issues": [
+    "Admin features not displaying for principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe' despite being added to authorization list"
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-create-employee-authentication-system-integrated-with-internet-identity-allowing-employees-to-securely-log-in-and-identify-themselves-for-attendance-tracking",
+      "title": "Create employee authentication system integrated with Internet Identity, allowing employees to securely log in and identify themselves for attendance tracking",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-attendance-check-in-check-out-system-allowing-employees-to-record-their-arrival-and-departure-times-with-timestamps",
+      "title": "Build attendance check-in/check-out system allowing employees to record their arrival and departure times with timestamps",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-offline-first-architecture-using-browser-local-storage-to-cache-attendance-records-when-the-device-is-offline-with-automatic-synchronization-to-the-backend-when-connectivity-is-restored",
+      "title": "Implement offline-first architecture using browser local storage to cache attendance records when the device is offline, with automatic synchronization to the backend when connectivity is restored",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-integrate-browser-geolocation-api-to-capture-and-store-employee-location-latitude-longitude-with-each-check-in-and-check-out-event",
+      "title": "Integrate browser geolocation API to capture and store employee location (latitude/longitude) with each check-in and check-out event",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-monthly-attendance-report-generation-system-showing-each-employee-s-check-in-check-out-history-total-hours-worked-and-location-data-for-the-selected-month",
+      "title": "Create monthly attendance report generation system showing each employee's check-in/check-out history, total hours worked, and location data for the selected month",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-employee-dashboard-showing-personal-attendance-history-current-check-in-status-and-quick-access-to-check-in-check-out-actions",
+      "title": "Design employee dashboard showing personal attendance history, current check-in status, and quick access to check-in/check-out actions",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-admin-dashboard-providing-overview-of-all-employees-their-current-status-and-access-to-reporting-features",
+      "title": "Design admin dashboard providing overview of all employees, their current status, and access to reporting features",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-establish-a-cohesive-visual-identity-using-professional-corporate-colors-avoid-blue-and-purple-clean-typography-and-a-modern-dashboard-style-layout-suitable-for-an-employee-attendance-application-enforcing-this-theme-consistently-across-all-pages-and-components",
+      "title": "Establish a cohesive visual identity using professional corporate colors (avoid blue and purple), clean typography, and a modern dashboard-style layout suitable for an employee attendance application, enforcing this theme consistently across all pages and components",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-existing-logo-in-the-layout-component-with-the-uploaded-simotech-logo-save-20260222-154035-jpg-ensuring-it-maintains-proper-dimensions-and-displays-correctly-in-both-desktop-and-mobile-views",
+      "title": "Replace the existing logo in the Layout component with the uploaded Simotech logo (SAVE_20260222_154035.jpg), ensuring it maintains proper dimensions and displays correctly in both desktop and mobile views",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-clear-documentation-or-user-interface-guidance-explaining-that-admin-accounts-access-the-system-by-logging-in-with-internet-identity-using-the-email-contact-simotechrenewable-gmail-com-and-that-admin-privileges-are-automatically-granted-to-this-email-address",
+      "title": "Add clear documentation or user interface guidance explaining that admin accounts access the system by logging in with Internet Identity using the email contact.simotechrenewable@gmail.com, and that admin privileges are automatically granted to this email address",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-visible-ui-component-to-the-employee-dashboard-that-displays-the-currently-logged-in-user-s-internet-identity-principal-id-immediately-after-successful-authentication",
+      "title": "Add a visible UI component to the Employee Dashboard that displays the currently logged-in user's Internet Identity principal ID immediately after successful authentication",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-similar-principal-id-display-component-to-the-admin-dashboard-for-admin-users-to-verify-their-identity",
+      "title": "Add a similar principal ID display component to the Admin Dashboard for admin users to verify their identity",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-adminlogininfo-component-to-explain-that-admin-privileges-are-granted-by-principal-id-not-email-and-instruct-users-to-share-their-displayed-principal-id-with-the-system-administrator-for-admin-access-setup",
+      "title": "Update the AdminLoginInfo component to explain that admin privileges are granted by principal ID (not email), and instruct users to share their displayed principal ID with the system administrator for admin access setup",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-the-useisadmin-hook-correctly-queries-the-backend-and-returns-admin-status-for-the-authenticated-user-with-principal-mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe",
+      "title": "Verify the useIsAdmin hook correctly queries the backend and returns admin status for the authenticated user with principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe'",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-admindashboard-monthlyreportpage-and-layout-components-correctly-display-admin-features-when-useisadmin-returns-true-for-principal-mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe",
+      "title": "Ensure the AdminDashboard, MonthlyReportPage, and Layout components correctly display admin features when useIsAdmin returns true for principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe'",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Employee attendance tracking system",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Offline access with automatic data upload when online",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Monthly attendance reporting",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Employee location tracking",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Admin access for contact.simotechrenewable@gmail.com",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Implement admin role management system where contact.simotechrenewable@gmail.com has admin privileges to view all employee data, generate reports, and manage the system",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Debug and fix the admin privilege assignment logic in the backend to ensure that when a user logs in with Internet Identity using the email contact.simotechrenewable@gmail.com, they are correctly identified and granted admin privileges",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Verify that the Internet Identity principal mapping correctly associates the email contact.simotechrenewable@gmail.com with the authenticated user's principal, ensuring the backend can identify the admin user regardless of how Internet Identity generates the principal",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Add logging or diagnostic output in the backend to track when admin privilege checks occur and what email/principal is being evaluated, helping identify why the admin account is not being recognized",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Update the app to display the logged-in user's principal ID on the dashboard/screen after login",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Configure admin privileges for principal ID mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Add the principal ID 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe' to the backend's admin authorization list, ensuring this principal has full admin privileges including viewing all employees, generating reports, and managing the system",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Debug and fix the admin authorization check logic in the backend to ensure principal 'mhpch-6hb2j-phylo-7bgid-lmdtt-nd4to-wuert-h3mxk-4jz53-6meuu-iqe' is correctly recognized as an admin when calling isCallerAdmin()",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Add backend logging or console output to track admin authorization checks, including the calling principal, stored admin principals, and comparison results to aid in debugging",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Simotech Renewable Attendance App",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
